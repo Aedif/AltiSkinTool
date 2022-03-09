@@ -1,4 +1,5 @@
-package ui;
+package AltiSkinTool.ui;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import poly.PolyWriter;
+import AltiSkinTool.poly.PolyWriter;
 
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ import javax.swing.JCheckBox;
 public class SpriteSheetDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
-    
+
     private final JPanel contentPanel = new JPanel();
     private JLabel lblSpriteSheet;
     private JCheckBox chckbxBorder;
@@ -55,8 +56,9 @@ public class SpriteSheetDialog extends JDialog {
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
                             File file = fc.getSelectedFile();
                             try {
-                                if(chckbxBorder.isSelected()){
-                                    ImageIO.write(PolyWriter.generateBorderedSpriteSheet(spriteSheet, spriteCount), "png", file);
+                                if (chckbxBorder.isSelected()) {
+                                    ImageIO.write(PolyWriter.generateBorderedSpriteSheet(spriteSheet, spriteCount),
+                                            "png", file);
                                 } else {
                                     ImageIO.write(spriteSheet, "png", file);
                                 }
@@ -64,7 +66,7 @@ public class SpriteSheetDialog extends JDialog {
                                 e1.printStackTrace();
                             }
                         } else {
-                           
+
                         }
                     }
                 });
@@ -72,8 +74,9 @@ public class SpriteSheetDialog extends JDialog {
                     chckbxBorder = new JCheckBox("Border");
                     chckbxBorder.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent arg0) {
-                            if(chckbxBorder.isSelected()){
-                                lblSpriteSheet.setIcon(new ImageIcon(PolyWriter.generateBorderedSpriteSheet(spriteSheet, spriteCount)));
+                            if (chckbxBorder.isSelected()) {
+                                lblSpriteSheet.setIcon(new ImageIcon(
+                                        PolyWriter.generateBorderedSpriteSheet(spriteSheet, spriteCount)));
                             } else {
                                 lblSpriteSheet.setIcon(new ImageIcon(spriteSheet));
                             }
@@ -99,8 +102,8 @@ public class SpriteSheetDialog extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
-    
-    private void close(){
+
+    private void close() {
         this.dispose();
     }
 

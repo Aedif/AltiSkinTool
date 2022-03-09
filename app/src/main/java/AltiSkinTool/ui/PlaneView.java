@@ -1,5 +1,4 @@
-package ui;
-import java.awt.EventQueue;
+package AltiSkinTool.ui;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -12,9 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import poly.Poly;
-import poly.PolyReader;
-import poly.PolyWriter;
+import AltiSkinTool.poly.Poly;
+import AltiSkinTool.poly.PolyReader;
+import AltiSkinTool.poly.PolyWriter;
 
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
@@ -30,44 +29,27 @@ import java.awt.event.FocusEvent;
 
 public class PlaneView {
 
-    private JFrame frame;
+    public JFrame frame;
     private ViewPanel pnlView;
     private String dist_path;
-    
+
     private JComboBox<String> cmbBase;
     private JComboBox<String> cmbSkin;
-    
+
     private JMenu mnTools;
-    
+
     private final JFileChooser fc = new JFileChooser();
-    
+
     private String selected_plane;
-    
-    // Plane 
+
+    // Plane
     private Poly[] planePolygons;
     private BufferedImage[] planeTextures;
-    
+
     // Skin
     private Poly[] skinPolygons;
     private BufferedImage[] skinTextures;
     private JTextField txtCustomSpriteSize;
-
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    PlaneView window = new PlaneView("C:\\Users\\Aedifico\\Desktop\\alti_image_adventures\\resources\\dist");
-                    //PlaneView window = new PlaneView("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Altitude\\resources\\dist");
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Create the application.
@@ -84,13 +66,13 @@ public class PlaneView {
         frame = new JFrame();
         frame.setBounds(100, 100, 948, 411);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
-        
+
         JMenu mnSelectPlane = new JMenu("Plane");
         menuBar.add(mnSelectPlane);
-        
+
         JMenuItem mntmLoopy = new JMenuItem("Loopy");
         mntmLoopy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -99,7 +81,7 @@ public class PlaneView {
             }
         });
         mnSelectPlane.add(mntmLoopy);
-        
+
         JMenuItem mntmExplodet = new JMenuItem("Explodet");
         mntmExplodet.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +90,7 @@ public class PlaneView {
             }
         });
         mnSelectPlane.add(mntmExplodet);
-        
+
         JMenuItem mntmMiranda = new JMenuItem("Miranda");
         mntmMiranda.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +99,7 @@ public class PlaneView {
             }
         });
         mnSelectPlane.add(mntmMiranda);
-        
+
         JMenuItem mntmBiplane = new JMenuItem("Biplane");
         mntmBiplane.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -126,7 +108,7 @@ public class PlaneView {
             }
         });
         mnSelectPlane.add(mntmBiplane);
-        
+
         JMenuItem mntmBomber = new JMenuItem("Bomber");
         mntmBomber.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -135,28 +117,30 @@ public class PlaneView {
             }
         });
         mnSelectPlane.add(mntmBomber);
-        
+
         mnTools = new JMenu("Tools");
         mnTools.setEnabled(false);
         menuBar.add(mnTools);
-        
+
         JMenuItem mntmPlaneSpritesheet = new JMenuItem("Plane SpriteSheet");
         mntmPlaneSpritesheet.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                JDialog spriteDialog = new SpriteSheetDialog(PolyWriter.generateSpriteSheet(planePolygons, planeTextures), planePolygons.length);
+                JDialog spriteDialog = new SpriteSheetDialog(
+                        PolyWriter.generateSpriteSheet(planePolygons, planeTextures), planePolygons.length);
                 spriteDialog.setVisible(true);
             }
         });
         mnTools.add(mntmPlaneSpritesheet);
-        
+
         JMenuItem mntmLoadCustomPlane = new JMenuItem("Load custom plane");
         mntmLoadCustomPlane.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 fc.setCurrentDirectory(new File(dist_path));
                 int returnVal = fc.showOpenDialog(pnlView);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?", "Border", JOptionPane.YES_NO_OPTION);
-                    if(dialogResult == JOptionPane.YES_OPTION){
+                    int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?",
+                            "Border", JOptionPane.YES_NO_OPTION);
+                    if (dialogResult == JOptionPane.YES_OPTION) {
                         planeTextures = PolyReader.parseBorderedCustomSpritesheet(planePolygons, fc.getSelectedFile());
                     } else {
                         planeTextures = PolyReader.parseCustomSpritesheet(planePolygons, fc.getSelectedFile());
@@ -165,18 +149,19 @@ public class PlaneView {
                 }
             }
         });
-        
+
         JMenuItem mntmSkinSpritesheet = new JMenuItem("Skin SpriteSheet");
         mntmSkinSpritesheet.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JDialog spriteDialog = new SpriteSheetDialog(PolyWriter.generateSpriteSheet(skinPolygons, skinTextures), skinPolygons.length);
+                JDialog spriteDialog = new SpriteSheetDialog(PolyWriter.generateSpriteSheet(skinPolygons, skinTextures),
+                        skinPolygons.length);
                 spriteDialog.setVisible(true);
             }
         });
         mntmSkinSpritesheet.setEnabled(false);
         mnTools.add(mntmSkinSpritesheet);
         mnTools.add(mntmLoadCustomPlane);
-        
+
         JMenuItem mntmLoadCustomSkin = new JMenuItem("Load custom skin");
         mntmLoadCustomSkin.setEnabled(false);
         mntmLoadCustomSkin.addActionListener(new ActionListener() {
@@ -184,8 +169,9 @@ public class PlaneView {
                 fc.setCurrentDirectory(new File(dist_path));
                 int returnVal = fc.showOpenDialog(pnlView);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?", "Border", JOptionPane.YES_NO_OPTION);
-                    if(dialogResult == JOptionPane.YES_OPTION){
+                    int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?",
+                            "Border", JOptionPane.YES_NO_OPTION);
+                    if (dialogResult == JOptionPane.YES_OPTION) {
                         skinTextures = PolyReader.parseBorderedCustomSpritesheet(skinPolygons, fc.getSelectedFile());
                     } else {
                         skinTextures = PolyReader.parseCustomSpritesheet(skinPolygons, fc.getSelectedFile());
@@ -195,7 +181,7 @@ public class PlaneView {
             }
         });
         mnTools.add(mntmLoadCustomSkin);
-        
+
         JMenuItem mntmWritePlaneTo = new JMenuItem("Write plane to pack");
         mntmWritePlaneTo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -203,7 +189,7 @@ public class PlaneView {
             }
         });
         mnTools.add(mntmWritePlaneTo);
-        
+
         JMenuItem mntmWriteSkinTo = new JMenuItem("Write skin to pack");
         mntmWriteSkinTo.setEnabled(false);
         mntmWriteSkinTo.addActionListener(new ActionListener() {
@@ -212,44 +198,45 @@ public class PlaneView {
             }
         });
         mnTools.add(mntmWriteSkinTo);
+
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
-        
+
         JPanel pnlPolyView = new JPanel();
         frame.getContentPane().add(pnlPolyView, BorderLayout.CENTER);
         pnlPolyView.setLayout(new BorderLayout(0, 0));
-        
+
         JPanel pnlMenu = new JPanel();
         pnlPolyView.add(pnlMenu, BorderLayout.NORTH);
         pnlMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        
+
         JLabel lblBase = new JLabel("Base");
         pnlMenu.add(lblBase);
-        
+
         cmbBase = new JComboBox<String>();
         cmbBase.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("cmb state change");
-                if(cmbBase.getSelectedItem() != null)
-                    loadBase((String)cmbBase.getSelectedItem());
+                if (cmbBase.getSelectedItem() != null)
+                    loadBase((String) cmbBase.getSelectedItem());
             }
         });
         pnlMenu.add(cmbBase);
-        
+
         JLabel lblSkin = new JLabel("Skin");
         pnlMenu.add(lblSkin);
-        
+
         cmbSkin = new JComboBox<String>();
         cmbSkin.setEnabled(false);
         cmbSkin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(cmbSkin.getSelectedItem() != null){
-                    if(((String)cmbSkin.getSelectedItem()).equals("NONE")){
+                if (cmbSkin.getSelectedItem() != null) {
+                    if (((String) cmbSkin.getSelectedItem()).equals("NONE")) {
                         pnlView.removeSkin();
                         mntmSkinSpritesheet.setEnabled(false);
                         mntmLoadCustomSkin.setEnabled(false);
                         mntmWriteSkinTo.setEnabled(false);
                     } else {
-                        loadSkin((String)cmbSkin.getSelectedItem());
+                        loadSkin((String) cmbSkin.getSelectedItem());
                         mntmSkinSpritesheet.setEnabled(true);
                         mntmLoadCustomSkin.setEnabled(true);
                         mntmWriteSkinTo.setEnabled(true);
@@ -257,15 +244,16 @@ public class PlaneView {
                 }
             }
         });
-        cmbSkin.setModel(new DefaultComboBoxModel<String>(new String[] {"NONE", "Checker", "Flame", "Santa", "Shark", "Zebra"}));
+        cmbSkin.setModel(new DefaultComboBoxModel<String>(
+                new String[] { "NONE", "Checker", "Flame", "Santa", "Shark", "Zebra" }));
         pnlMenu.add(cmbSkin);
-        
+
         JLabel lblMisc = new JLabel("Misc");
         pnlMenu.add(lblMisc);
-        
+
         JComboBox<String> cmbMisc = new JComboBox<String>();
         pnlMenu.add(cmbMisc);
-        
+
         JCheckBox chckbxShowPoly = new JCheckBox("Show poly");
         chckbxShowPoly.setSelected(true);
         chckbxShowPoly.addActionListener(new ActionListener() {
@@ -274,7 +262,7 @@ public class PlaneView {
             }
         });
         pnlMenu.add(chckbxShowPoly);
-        
+
         JCheckBox chckbxShowTexture = new JCheckBox("Show texture");
         chckbxShowTexture.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -283,7 +271,7 @@ public class PlaneView {
         });
         chckbxShowTexture.setSelected(true);
         pnlMenu.add(chckbxShowTexture);
-        
+
         JCheckBox chckbxShowOutline = new JCheckBox("Show outline");
         chckbxShowOutline.setSelected(true);
         chckbxShowOutline.addActionListener(new ActionListener() {
@@ -292,19 +280,19 @@ public class PlaneView {
             }
         });
         pnlMenu.add(chckbxShowOutline);
-        
+
         JLabel lblCustomSpriteSize = new JLabel("|   Custom sprite size");
         pnlMenu.add(lblCustomSpriteSize);
-        
+
         txtCustomSpriteSize = new JTextField();
         txtCustomSpriteSize.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent arg0) {
                 String customString = txtCustomSpriteSize.getText();
                 int newCustom = 90;
-                if(customString.matches("\\d+")){
+                if (customString.matches("\\d+")) {
                     newCustom = Integer.parseInt(customString);
-                    if(newCustom < 90 || newCustom > 200){
+                    if (newCustom < 90 || newCustom > 200) {
                         txtCustomSpriteSize.setText("90");
                         newCustom = 90;
                     }
@@ -319,50 +307,54 @@ public class PlaneView {
         txtCustomSpriteSize.setText("90");
         pnlMenu.add(txtCustomSpriteSize);
         txtCustomSpriteSize.setColumns(4);
-        
+
         pnlView = new ViewPanel();
         pnlPolyView.add(pnlView, BorderLayout.CENTER);
     }
-    
-    private void loadPlane(String plane){
+
+    private void loadPlane(String plane) {
         populateBaseCMB(plane);
         populateSkinCMB(plane);
         mnTools.setEnabled(true);
     }
-    
-    public void loadBase(String base){
-        File f = new File(dist_path + "\\.poly\\render\\planes\\"+ selected_plane + "\\" + base + ".animatedpoly");
+
+    public void loadBase(String base) {
+        File f = new File(dist_path + "\\.poly\\render\\planes\\" + selected_plane + "\\" + base + ".animatedpoly");
         planePolygons = PolyReader.readPoly(f);
         planeTextures = PolyReader.getTextures(dist_path, planePolygons);
         pnlView.setPlane(planePolygons, planeTextures);
     }
-    
-    public void loadSkin(String skin){
+
+    public void loadSkin(String skin) {
         File f = new File(dist_path + "\\.poly\\render\\skins\\" + selected_plane + "\\" + skin + ".animatedpoly");
         skinPolygons = PolyReader.readPoly(f);
         skinTextures = PolyReader.getTextures(dist_path, skinPolygons);
         pnlView.setSkin(skinPolygons, skinTextures);
     }
-    
-    public void populateBaseCMB(String plane){
+
+    public void populateBaseCMB(String plane) {
         File dir = new File(dist_path + "\\.poly\\render\\planes\\" + plane + "\\");
-        File[] files = dir.listFiles(new FilenameFilter() { 
-            public boolean accept(File dir, String filename)
-        { return filename.endsWith(".animatedpoly"); }} );
+        File[] files = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(".animatedpoly");
+            }
+        });
         cmbBase.removeAllItems();
-        for(File file : files){
+        for (File file : files) {
             cmbBase.addItem(file.getName().replaceFirst(".animatedpoly", ""));
         }
     }
-    
-    public void populateSkinCMB(String plane){
+
+    public void populateSkinCMB(String plane) {
         File dir = new File(dist_path + "\\.poly\\render\\skins\\" + plane + "\\");
-        File[] files = dir.listFiles(new FilenameFilter() { 
-            public boolean accept(File dir, String filename)
-        { return filename.endsWith(".animatedpoly"); }} );
+        File[] files = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(".animatedpoly");
+            }
+        });
         cmbSkin.removeAllItems();
         cmbSkin.addItem("NONE");
-        for(File file : files){
+        for (File file : files) {
             cmbSkin.addItem(file.getName().replaceFirst(".animatedpoly", ""));
         }
         cmbSkin.setEnabled(true);
