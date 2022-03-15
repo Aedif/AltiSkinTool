@@ -4,8 +4,10 @@
 package AltiSkinTool;
 
 import java.awt.EventQueue;
+import java.util.Properties;
 
 import AltiSkinTool.ui.PlaneView;
+import AltiSkinTool.util.Config;
 
 public class App {
 
@@ -13,10 +15,9 @@ public class App {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PlaneView window = new PlaneView(
-                            "D:\\SteamLibrary\\steamapps\\common\\Altitude\\app\\resources\\dist");
-                    // PlaneView window = new PlaneView("C:\\Program Files
-                    // (x86)\\Steam\\steamapps\\common\\Altitude\\resources\\dist");
+                    Properties prop = Config.getProperties();
+                    prop.getProperty("dist_path");
+                    PlaneView window = new PlaneView(prop.getProperty("dist_path"));
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Properties;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -14,6 +16,7 @@ import javax.swing.JLabel;
 import AltiSkinTool.poly.Poly;
 import AltiSkinTool.poly.PolyReader;
 import AltiSkinTool.poly.PolyWriter;
+import AltiSkinTool.util.Config;
 
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
@@ -24,6 +27,7 @@ import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -63,6 +67,7 @@ public class PlaneView {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+
         frame = new JFrame();
         frame.setBounds(100, 100, 948, 411);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -198,6 +203,30 @@ public class PlaneView {
             }
         });
         mnTools.add(mntmWriteSkinTo);
+
+        JMenu config = new JMenu("Config");
+        config.setEnabled(true);
+        menuBar.add(config);
+
+        JMenuItem mntmSetPath = new JMenuItem("Set dist Path");
+        mntmSetPath.setEnabled(true);
+        mntmSetPath.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                Properties prop = Config.getProperties();
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if (prop.containsKey("dist_path")) {
+                    fc.setCurrentDirectory(new File(prop.getProperty("dist_path")));
+                }
+                int returnVal = fc.showOpenDialog(pnlView);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    dist_path = fc.getSelectedFile().getAbsolutePath();
+                    prop.setProperty("dist_path", dist_path);
+                    Config.saveProperties(prop);
+                }
+            }
+        });
+        config.add(mntmSetPath);
 
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
