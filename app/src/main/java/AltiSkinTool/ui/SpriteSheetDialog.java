@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import AltiSkinTool.poly.PolyWriter;
+import AltiSkinTool.util.Config;
 
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -52,9 +54,15 @@ public class SpriteSheetDialog extends JDialog {
                 btnSave.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         JFileChooser fc = new JFileChooser();
+                        Properties prop = Config.getProperties();
+                        if (prop.containsKey("save_path")) {
+                            fc.setCurrentDirectory(new File(prop.getProperty("save_path")));
+                        }
                         int returnVal = fc.showSaveDialog(contentPanel);
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
                             File file = fc.getSelectedFile();
+                            prop.setProperty("save_path", file.getParent());
+                            Config.saveProperties(prop);
                             try {
                                 if (chckbxBorder.isSelected()) {
                                     ImageIO.write(PolyWriter.generateBorderedSpriteSheet(spriteSheet, spriteCount),

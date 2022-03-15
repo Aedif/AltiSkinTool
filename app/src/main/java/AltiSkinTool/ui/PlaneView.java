@@ -140,9 +140,16 @@ public class PlaneView {
         JMenuItem mntmLoadCustomPlane = new JMenuItem("Load custom plane");
         mntmLoadCustomPlane.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                fc.setCurrentDirectory(new File(dist_path));
+                Properties prop = Config.getProperties();
+                if (prop.containsKey("custom_plane_path")) {
+                    fc.setCurrentDirectory(new File(prop.getProperty("custom_plane_path")));
+                } else {
+                    fc.setCurrentDirectory(new File(dist_path));
+                }
                 int returnVal = fc.showOpenDialog(pnlView);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    prop.setProperty("custom_plane_path", fc.getSelectedFile().getParent());
+                    Config.saveProperties(prop);
                     int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?",
                             "Border", JOptionPane.YES_NO_OPTION);
                     if (dialogResult == JOptionPane.YES_OPTION) {
@@ -171,9 +178,16 @@ public class PlaneView {
         mntmLoadCustomSkin.setEnabled(false);
         mntmLoadCustomSkin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                fc.setCurrentDirectory(new File(dist_path));
+                Properties prop = Config.getProperties();
+                if (prop.containsKey("custom_skin_path")) {
+                    fc.setCurrentDirectory(new File(prop.getProperty("custom_skin_path")));
+                } else {
+                    fc.setCurrentDirectory(new File(dist_path));
+                }
                 int returnVal = fc.showOpenDialog(pnlView);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    prop.setProperty("custom_skin_path", fc.getSelectedFile().getParent());
+                    Config.saveProperties(prop);
                     int dialogResult = JOptionPane.showConfirmDialog(frame, "Is this a bordered sprite sheet?",
                             "Border", JOptionPane.YES_NO_OPTION);
                     if (dialogResult == JOptionPane.YES_OPTION) {
