@@ -32,4 +32,5 @@ Every model in the project comes with a camera/keyframe configuration correspond
 
 The plane models are used to apply a transparent mask on any other objects in the scene which is useful when producing skins as in-game these are rendered on top of the planes.
 
-## Showcase
+## Short Video Showcase
+[![Showcase](https://i9.ytimg.com/vi/gs9VuJ4Gyck/mq2.jpg?sqp=CIizwpEG&rs=AOn4CLDiQo70e1yr5S8TuqrVspJCBgI3YQ)](https://youtu.be/gs9VuJ4Gyck "Showcase")
